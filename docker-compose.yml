@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  secretkeeper:
+    image: ${DOCKER_REGISTRY}secretkeeper
+    build:
+      context: .
+      dockerfile: SecretKeeper\Dockerfile
