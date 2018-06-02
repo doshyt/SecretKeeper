@@ -5,9 +5,16 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "80"
+      - target: 8080
+        published: 8080
+        protocol: tcp
+        mode: host
+      - target: 44340
+        published: 44340
+        protocol: tcp
+        mode: host
 
 networks:
   default:
     external:
-      name: nat
+      name: nat  

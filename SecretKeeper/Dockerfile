@@ -1,8 +1,7 @@
-FROM microsoft/aspnetcore:2.0-nanoserver-1709 AS base
+FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
 WORKDIR /app
-EXPOSE 80
 
-FROM microsoft/aspnetcore-build:2.0-nanoserver-1709 AS build
+FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /src
 COPY SecretKeeper/SecretKeeper.csproj SecretKeeper/
 RUN dotnet restore SecretKeeper/SecretKeeper.csproj
@@ -14,6 +13,6 @@ FROM build AS publish
 RUN dotnet publish SecretKeeper.csproj -c Release -o /app
 
 FROM base AS final
-WORKDIR /app
 COPY --from=publish /app .
+COPY ./SecretKeeper/Certificates/cert.pfx /app/Certificates/cert.pfx
 ENTRYPOINT ["dotnet", "SecretKeeper.dll"]

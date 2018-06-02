@@ -1,0 +1,35 @@
+﻿@page
+@model ShareModel
+@{ 
+    ViewData["Title"] = "Home page";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Share your secret</title>
+</head>
+<body>
+    <h3>Share your secret for one-time access</h3>
+    <form method="post">
+        <fieldset>
+            <div>
+                <label for="Secret">Secret:</label>
+                <input type="password" autocomplete="off" asp-for="@Model.Value" />
+            </div>
+            <br>
+            <div>
+                <input type="submit" value="Generate one-time link" class="submit" />
+            </div>
+        </fieldset>
+    </form>
+    @if (!string.IsNullOrEmpty(@Model.Token))
+    {
+        <div>
+            <h3>Send this link to share the secret</h3>
+            <p>Right click -> Copy link address:</p>
+            <a href="@Model.Token">@Model.Token</a>
+        </div>
+    }
+</body>
+</html>

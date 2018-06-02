@@ -1,0 +1,27 @@
+﻿@page
+@model SecretKeeper.ShareModel
+@{ 
+
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Share your secret Form</title>
+</head>
+<body>
+    <form method="post">
+        <fieldset>
+            <legend>Type secret</legend>
+            <div>
+                <label for="Secret">Secret:</label>
+                <input type="password" asp-for="@Model.Value" />
+            </div>
+            <div>
+                <input type="submit" value="Generate one-time link" class="submit" />
+            </div>
+        </fieldset>
+    </form>
+    <li>@Model.Token</li>
+</body>
+</html>

@@ -8,7 +8,6 @@ namespace SecretKeeper.Models
             : base(options)
         {
         }
-
         public DbSet<SecretItem> SecretItems { get; set; }
     }
 }

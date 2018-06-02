@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SecretKeeper.Models;
-using System.Text;
 using SecretKeeper.Engine;
+
 
 namespace SecretKeeper.Controllers
 {
@@ -18,12 +16,6 @@ namespace SecretKeeper.Controllers
         public SecretController(SecretContext context)
         {
             _context = context;
-
-            if (_context.SecretItems.Count() == 0)
-            {
-  //              _context.SecretItems.Add(new SecretItem { Value = "Secret1", Token = Hash.GetToken() });
-  //              _context.SaveChanges();
-            }
         }
 
         [HttpGet]
@@ -71,16 +63,18 @@ namespace SecretKeeper.Controllers
             return Ok(link);
         }
 
-        // PUT api/secrets/5
+        /*
+        // PUT
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {
         }
 
-        // DELETE api/secrets/5
+        // DELETE
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
         }
+        */
     }
 }

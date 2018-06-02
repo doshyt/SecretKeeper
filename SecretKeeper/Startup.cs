@@ -11,7 +11,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using SecretKeeper.Models;
 
-
 namespace SecretKeeper
 {
     public class Startup
@@ -28,8 +27,16 @@ namespace SecretKeeper
         {
             services.AddDbContext<SecretContext>(opt =>
                 opt.UseInMemoryDatabase("Secrets"));
+            
+            /* HTTPS
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
+            */
 
             services.AddMvc();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,7 +47,17 @@ namespace SecretKeeper
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc();
+            /* HTTPS
+            var options = new RewriteOptions().AddRedirectToHttps();
+            app.UseRewriter(options);
+            */
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Index}/{action}/");
+            });
         }
     }
 }

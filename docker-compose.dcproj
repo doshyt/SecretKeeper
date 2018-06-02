@@ -5,7 +5,7 @@
     <DockerTargetOS>Windows</DockerTargetOS>
     <ProjectGuid>da102e3b-4673-4e43-ae53-4a32037e5097</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://{ServiceIPAddress}{ServicePort}/api/values</DockerServiceUrl>
+    <DockerServiceUrl>https://{ServiceIPAddress}:44340/index</DockerServiceUrl>
     <DockerServiceName>secretkeeper</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
