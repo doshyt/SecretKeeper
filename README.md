@@ -4,7 +4,7 @@ Tiny web-based tool that allows to share secrets via one-time links.
 Powered by ASP.NET Core 2.1 and Docker.
 
 # Run
-SecretKeeper is built and run in Docker.
+SecretKeeper is built and ran in Docker.
 
 ```
 docker-compose -f "C:\dev\SecretKeeper\docker-compose.yml" -f "C:\dev\SecretKeeper\docker-compose.override.yml" --no-ansi build
@@ -15,7 +15,7 @@ docker-compose  -f "C:\dev\SecretKeeper\docker-compose.yml" -f "C:\dev\SecretKee
 By default, the container publishes ports 44340 (https) and 8080 (http) to the host and makes them accessbile to other compiters on the network (firewall rules need to be added).
 
 # Usage
-Open `https://<your IP>:44340/index` in browser. Enter a secret text to be shared and press *Generate one-tine link*. Copy the link and send share it with someone. When the link is accessed, the content is rendered to the browse. The link and the secret are erased and gone forever.
+Open `https://<your IP>:44340/index` in a browser. Enter a secret text to be shared and press *Generate one-time link*. Copy the link and share it with someone. When the link is accessed, the content is rendered to the browser. At the same time, the link and the secret are erased and gone forever.
 
 # Security features
 - Secrets are stored only until accessed in the in-memory database.
@@ -38,6 +38,6 @@ Cache-Control: no-cache
 The response returns a link to the secret.
 
 # Roadmap
-- Encrypt secrets before storing them in DB
+- Encrypt secrets before storing them in the DB
 - Implement file sharing
 - Add integration to secret providers (Hashicorp Vault, Azure KeyVault)
