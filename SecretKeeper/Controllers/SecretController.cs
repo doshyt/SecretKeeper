@@ -73,6 +73,12 @@ namespace SecretKeeper.Controllers
             {
                 return BadRequest();
             }
+
+            if (item.Value == null)
+            {
+                return Ok();
+            }
+
             string token = Hash.GetToken(_rndController);
             string protectedValue = _protector.Protect(item.Value, lifetime: TimeSpan.FromMinutes(5));
             _context.SecretItems.Add(new SecretItem { Value = protectedValue, Token = token });
