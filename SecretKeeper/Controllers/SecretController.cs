@@ -19,11 +19,14 @@ namespace SecretKeeper.Controllers
     {
         private readonly ITimeLimitedDataProtector _protector;
         private readonly SecretContext _context;
+        private readonly Random _rndController;
 
         public SecretController(SecretContext context)
         {
             _protector = DataProtectionProvider.Create(new DirectoryInfo(@"c:\app\Certificates\")).CreateProtector("Secrets.TimeLimited").ToTimeLimitedDataProtector();
+            _rndController = new Random();
             _context = context;
+
         }
 
         /*
@@ -70,7 +73,7 @@ namespace SecretKeeper.Controllers
             {
                 return BadRequest();
             }
-            string token = Hash.GetToken();
+            string token = Hash.GetToken(_rndController);
             string protectedValue = _protector.Protect(item.Value, lifetime: TimeSpan.FromMinutes(5));
             _context.SecretItems.Add(new SecretItem { Value = protectedValue, Token = token });
             _context.SaveChanges();

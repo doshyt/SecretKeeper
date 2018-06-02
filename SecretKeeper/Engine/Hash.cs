@@ -9,14 +9,11 @@ namespace SecretKeeper.Engine
 {
     public static class Hash
     {
-        public static string GetToken()
+        public static string GetToken(Random rndController)
         {
             using (SHA256 ShaProvider = SHA256.Create())
             {
-                Random rnd = new Random();
-                int randValue = rnd.Next(1, 100000);
-
-
+                int randValue = rndController.Next(1, 10000000);
                 byte[] data = ShaProvider.ComputeHash(Encoding.UTF8.GetBytes(randValue.ToString()));
                 StringBuilder sBuilder = new StringBuilder();
                 for (int i = 0; i < data.Length; i++)
