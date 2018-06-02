@@ -4,25 +4,35 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using SecretKeeper.Models;
 using SecretKeeper.Engine;
-
+using Microsoft.AspNetCore.DataProtection;
+using System.IO;
+using System.Security.Cryptography;
 
 namespace SecretKeeper.Controllers
 {
+
+    //= DataProtectionProvider.Create(new DirectoryInfo(@"c:\myapp-keys\"));
+    //     var baseProtector = DataProtectionProvider provider.CreateProtector("Contoso.TimeLimitedSample");
+
     [Route("api/[controller]")]
     public class SecretController : ControllerBase
     {
+        private readonly ITimeLimitedDataProtector _protector;
         private readonly SecretContext _context;
 
         public SecretController(SecretContext context)
         {
+            _protector = DataProtectionProvider.Create(new DirectoryInfo(@"c:\app\Certificates\")).CreateProtector("Secrets.TimeLimited").ToTimeLimitedDataProtector();
             _context = context;
         }
 
+        /*
         [HttpGet]
         public List<SecretItem> GetAll()
         {
             return _context.SecretItems.ToList();
         }
+        */
 
         [HttpGet("{token}", Name ="GetByToken")]
         public IActionResult GetByToken(string token)
@@ -38,13 +48,17 @@ namespace SecretKeeper.Controllers
                 _context.SecretItems.Remove(item);
                 _context.SaveChanges();
 
-                return Ok(SecretValue);
+                return Ok(_protector.Unprotect(SecretValue));
             }
             catch (NullReferenceException)
             {
                 return NotFound();
             }
             
+            catch (CryptographicException)
+            {
+                return Ok("This secret has expired");
+            }
 
         }
 
@@ -57,7 +71,8 @@ namespace SecretKeeper.Controllers
                 return BadRequest();
             }
             string token = Hash.GetToken();
-            _context.SecretItems.Add(new SecretItem { Value = item.Value, Token = token });
+            string protectedValue = _protector.Protect(item.Value, lifetime: TimeSpan.FromMinutes(5));
+            _context.SecretItems.Add(new SecretItem { Value = protectedValue, Token = token });
             _context.SaveChanges();
             string link = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}/api/secret/" + token;
             return Ok(link);
