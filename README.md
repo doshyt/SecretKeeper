@@ -7,9 +7,9 @@ Powered by ASP.NET Core 2.1 and Docker.
 SecretKeeper is built and ran in Docker.
 
 ```
-docker-compose -f "C:\dev\SecretKeeper\docker-compose.yml" -f "C:\dev\SecretKeeper\docker-compose.override.yml" --no-ansi build
+docker-compose -f docker-compose.yml -f docker-compose.override.yml --no-ansi build
 
-docker-compose  -f "C:\dev\SecretKeeper\docker-compose.yml" -f "C:\dev\SecretKeeper\docker-compose.override.yml" --no-ansi up -d --no-build --force-recreate --remove-orphans
+docker-compose -f docker-compose.yml -f docker-compose.override.yml --no-ansi up -d --no-build --force-recreate --remove-orphans
 ```
 
 By default, the container publishes ports 44340 (https) and 8080 (http) to the host and makes them accessbile to other compiters on the network (firewall rules need to be added).
