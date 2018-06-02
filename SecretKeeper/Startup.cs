@@ -51,7 +51,7 @@ namespace SecretKeeper
             var options = new RewriteOptions().AddRedirectToHttps();
             app.UseRewriter(options);
             */
-
+            app.UseStaticFiles();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
