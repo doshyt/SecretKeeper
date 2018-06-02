@@ -45,8 +45,8 @@ Cache-Control: no-cache
 The response returns a link to the secret.
 
 # Roadmap
-- <s>Encrypt secrets before storing them in the DB</s>
-- Prettify UI
-- Add Linux support
-- Implement file sharing
-- Add integration to secret providers (Hashicorp Vault, Azure KeyVault)
+[x] Encrypt secrets before storing them in the DB
+[x] Prettify UI
+[ ] Add Linux support
+[ ] Implement file sharing
+[ ] Add integration to secret providers (Hashicorp Vault, Azure KeyVault)
