@@ -1,6 +1,8 @@
 # SecretKeeper
 Have you ever wanted to share something and make sure it's gone once it is accessed? This tiny web-based service allows you to do exactly that - to share secrets via one-time links.
 
+![Alt text](docs/UI_example.png "Example of UI")
+
 Powered by ASP.NET Core 2.1 and Docker.
 
 # Run
