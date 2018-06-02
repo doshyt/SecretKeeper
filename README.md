@@ -39,6 +39,6 @@ The response returns a link to the secret.
 
 # Roadmap
 - Encrypt secrets before storing them in the DB
-- Prettify UI.
+- Prettify UI
 - Implement file sharing
 - Add integration to secret providers (Hashicorp Vault, Azure KeyVault)
