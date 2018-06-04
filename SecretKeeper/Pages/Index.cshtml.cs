@@ -30,7 +30,7 @@ namespace SecretKeeper.Pages
             {
                 { "Value", Value }
             };
-            var response = await client.PostAsync($"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}/api/secret/", 
+            var response = await client.PostAsync($"https://{this.Request.Host}/api/secret/", 
                 new StringContent(JsonConvert.SerializeObject(SecretValue, Formatting.Indented), Encoding.UTF8, "application/json"));
 
             Token = await response.Content.ReadAsStringAsync();
