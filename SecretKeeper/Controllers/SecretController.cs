@@ -11,9 +11,6 @@ using System.Security.Cryptography;
 namespace SecretKeeper.Controllers
 {
 
-    //= DataProtectionProvider.Create(new DirectoryInfo(@"c:\myapp-keys\"));
-    //     var baseProtector = DataProtectionProvider provider.CreateProtector("Contoso.TimeLimitedSample");
-
     [Route("api/[controller]")]
     public class SecretController : ControllerBase
     {
@@ -28,14 +25,6 @@ namespace SecretKeeper.Controllers
             _context = context;
 
         }
-
-        /*
-        [HttpGet]
-        public List<SecretItem> GetAll()
-        {
-            return _context.SecretItems.ToList();
-        }
-        */
 
         [HttpGet("{token}", Name ="GetByToken")]
         public IActionResult GetByToken(string token)
@@ -65,7 +54,6 @@ namespace SecretKeeper.Controllers
 
         }
 
-        // POST api/secrets
         [HttpPost]
         public IActionResult Create([FromBody] SecretItem item)
         {
@@ -87,18 +75,5 @@ namespace SecretKeeper.Controllers
             return Ok(link);
         }
 
-        /*
-        // PUT
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-        */
     }
 }
