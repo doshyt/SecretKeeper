@@ -20,7 +20,6 @@
         <input type="password" autocomplete="off" asp-for="@Model.Value" class="form-control" placeholder="Enter your secret" />
         <br/>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Generate one-time link</button>
-        <br/>
         @if (!string.IsNullOrEmpty(@Model.Token))
         {
             <p class="mt-5 mb-3 text-muted">Right click -> Copy link address:</p>
