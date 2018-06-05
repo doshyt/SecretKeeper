@@ -19,21 +19,25 @@ namespace SecretKeeper.Pages
         public string Value { get; set; }
         public async Task<IActionResult> OnPostAsync()
         {
-            HttpClientHandler handler = new HttpClientHandler
+            if (Value != null)
             {
-                ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; },
-                SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11
-            };
+                HttpClientHandler handler = new HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; },
+                    SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11
+                };
 
-            HttpClient client = new HttpClient(handler);
-            var SecretValue = new Dictionary<string, string>()
-            {
-                { "Value", Value }
-            };
-            var response = await client.PostAsync($"https://{this.Request.Host}/api/secret/", 
-                new StringContent(JsonConvert.SerializeObject(SecretValue, Formatting.Indented), Encoding.UTF8, "application/json"));
+                HttpClient client = new HttpClient(handler);
+                var SecretValue = new Dictionary<string, string>()
+                {
+                    { "Value", Value }
+                };
+                var response = await client.PostAsync($"https://{this.Request.Host}/api/secret/",
+                    new StringContent(JsonConvert.SerializeObject(SecretValue, Formatting.Indented), Encoding.UTF8, "application/json"));
 
-            Token = await response.Content.ReadAsStringAsync();
+                Token = await response.Content.ReadAsStringAsync();
+
+            }
 
             return Page();
         }
