@@ -71,7 +71,7 @@ namespace SecretKeeper.Controllers
             string protectedValue = _protector.Protect(item.Value, lifetime: TimeSpan.FromMinutes(5));
             _context.SecretItems.Add(new SecretItem { Value = protectedValue, Token = token });
             _context.SaveChanges();
-            string link = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}/api/secret/" + token;
+            string link = $"https://{this.Request.Host}/api/secret/" + token;
             return Ok(link);
         }
 

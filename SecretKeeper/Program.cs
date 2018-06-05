@@ -17,7 +17,7 @@ namespace SecretKeeper
     public class EndpointConfiguration
     {
         public string Host { get; set; }
-        public int? Port { get; set; }
+        public int Port { get; set; }
         public string Scheme { get; set; }
         public string StoreName { get; set; }
         public string StoreLocation { get; set; }
@@ -44,7 +44,7 @@ namespace SecretKeeper
             foreach (var endpoint in endpoints)
             {
                 var config = endpoint.Value;
-                var port = config.Port ?? (config.Scheme == "https" ? 443 : 80);
+                var port = config.Port;
 
                 var ipAddresses = new List<IPAddress>();
                 if (config.Host == "localhost")
@@ -65,11 +65,9 @@ namespace SecretKeeper
                     options.Listen(address, port,
                         listenOptions =>
                         {
-                            if (config.Scheme == "https")
-                            {
-                                var certificate = LoadCertificate(config, environment);
-                                listenOptions.UseHttps(certificate);
-                            }
+                            var certificate = LoadCertificate(config, environment);
+                            listenOptions.UseHttps(certificate);
+                           
                         });
                 }
             }
