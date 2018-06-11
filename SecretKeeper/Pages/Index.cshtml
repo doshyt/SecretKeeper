@@ -22,11 +22,13 @@
             <br />
             <button class="btn btn-lg btn-primary btn-block" type="submit">Generate one-time link</button>
         </form>
+
         @if (!string.IsNullOrEmpty(@Model.Token))
         {
             <p class="mb-3 text-muted">Right click -> Copy link address:</p>
             <a href="@Model.Token">@Model.Token</a>
         }
-    </div>
+        </div>
+        <!--    <div class="fixed-bottom"><h1 class="h3 mb-3 font-weight-normal">FAQ</h1></div> -->
 </body>
 </html>
