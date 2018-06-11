@@ -18,7 +18,7 @@
         <form id="main" class="form-secret" method="post">
             <h1 class="h3 mb-3 font-weight-normal">Share your secret for one-time access</h1>
             <label for="Secret" class="sr-only">Secret:</label>
-            <textarea rows="2" class="form-control" form="main" asp-for="@Model.Value" placeholder="Enter your secret text here"></textarea>
+            <textarea rows="3" class="form-control" form="main" asp-for="@Model.Value" placeholder="1. Enter a secret text here &#x000D; 2. Share the generated link &#x000D; 3. Secret is gone once opened"></textarea>
             <br />
             <button class="btn btn-lg btn-primary btn-block" type="submit">Generate one-time link</button>
         </form>
@@ -28,7 +28,9 @@
             <p class="mb-3 text-muted">Right click -> Copy link address:</p>
             <a href="@Model.Token">@Model.Token</a>
         }
-        </div>
-        <!--    <div class="fixed-bottom"><h1 class="h3 mb-3 font-weight-normal">FAQ</h1></div> -->
+    </div>
+    <div class="fixed-bottom"><a class="" href="https://github.com/doshyt/SecretKeeper/blob/master/README.md">Readme</a>
+    <p>(GitHub)</p>
+    </div>
 </body>
 </html>
