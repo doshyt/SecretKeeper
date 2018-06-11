@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Text;
 using Newtonsoft.Json;
 using System.Security.Authentication;
+using System.ComponentModel.DataAnnotations;
 
 namespace SecretKeeper.Pages
 {
@@ -15,7 +16,9 @@ namespace SecretKeeper.Pages
     {
         [BindProperty]
         public string Token { get; set; } = "";
+
         [BindProperty]
+        [MaxLength(3000)]
         public string Value { get; set; }
         public async Task<IActionResult> OnPostAsync()
         {
@@ -30,7 +33,7 @@ namespace SecretKeeper.Pages
                 HttpClient client = new HttpClient(handler);
                 var SecretValue = new Dictionary<string, string>()
                 {
-                    { "Value", Value }
+                    { "Value", @Value.Replace("\n", Environment.NewLine) }
                 };
                 var response = await client.PostAsync($"https://{this.Request.Host}/api/secret/",
                     new StringContent(JsonConvert.SerializeObject(SecretValue, Formatting.Indented), Encoding.UTF8, "application/json"));

@@ -14,10 +14,10 @@
     <title>Share your secret</title>
 </head>
 <body class="text-center" data-gr-c-s-loaded="true">
-    <form class="form-secret" method="post">
+    <form id="main" class="form-secret" method="post">
         <h1 class="h3 mb-3 font-weight-normal">Share your secret for one-time access</h1>
         <label for="Secret" class="sr-only">Secret:</label>
-        <input type="password" autocomplete="off" asp-for="@Model.Value" class="form-control" placeholder="Enter your secret" />
+        <textarea rows="2" class="form-control" form="main" asp-for="@Model.Value" placeholder="Enter your secret text here"></textarea>
         <br/>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Generate one-time link</button>
         @if (!string.IsNullOrEmpty(@Model.Token))
