@@ -14,18 +14,19 @@
     <title>Share your secret</title>
 </head>
 <body class="text-center" data-gr-c-s-loaded="true">
-    <form id="main" class="form-secret" method="post">
-        <h1 class="h3 mb-3 font-weight-normal">Share your secret for one-time access</h1>
-        <label for="Secret" class="sr-only">Secret:</label>
-        <textarea rows="2" class="form-control" form="main" asp-for="@Model.Value" placeholder="Enter your secret text here"></textarea>
-        <br/>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Generate one-time link</button>
+    <div class="form-secret">
+        <form id="main" class="form-secret" method="post">
+            <h1 class="h3 mb-3 font-weight-normal">Share your secret for one-time access</h1>
+            <label for="Secret" class="sr-only">Secret:</label>
+            <textarea rows="2" class="form-control" form="main" asp-for="@Model.Value" placeholder="Enter your secret text here"></textarea>
+            <br />
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Generate one-time link</button>
+        </form>
         @if (!string.IsNullOrEmpty(@Model.Token))
         {
-            <p class="mt-5 mb-3 text-muted">Right click -> Copy link address:</p>
+            <p class="mb-3 text-muted">Right click -> Copy link address:</p>
             <a href="@Model.Token">@Model.Token</a>
         }
-
-    </form>
+    </div>
 </body>
 </html>
