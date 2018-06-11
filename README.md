@@ -20,7 +20,7 @@ docker-compose -f docker-compose.yml -f docker-compose.override.yml --no-ansi bu
 docker-compose -f docker-compose.yml -f docker-compose.override.yml --no-ansi up -d --no-build --force-recreate --remove-orphans
 ```
 
-By default, the container publishes ports 44340 (https) and 8080 (http) to the host and makes them accessbile to other compiters on the network (firewall rules need to be added).
+By default, the container publishes the port 44340 (https) to the host and makes it accessbile to other compiters on the network (firewall rules need to be added).
 
 # Usage
 Open `https://<your IP>:44340/index` in a browser. Enter a secret text to be shared and press *Generate one-time link*. Copy the link and share it with someone. When the link is accessed, the content is rendered to the browser. At the same time, the link and the secret are erased and gone forever.
