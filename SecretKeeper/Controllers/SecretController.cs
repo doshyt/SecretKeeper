@@ -7,6 +7,9 @@ using SecretKeeper.Engine;
 using Microsoft.AspNetCore.DataProtection;
 using System.IO;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
+using System.Reflection;
 
 namespace SecretKeeper.Controllers
 {
@@ -73,6 +76,24 @@ namespace SecretKeeper.Controllers
             _context.SaveChanges();
             string link = $"https://{this.Request.Host}/api/secret/" + token;
             return Ok(link);
+        }
+
+        [HttpPost("UploadFile", Name ="Upload")]
+        public async Task<IActionResult> PostFile(IFormFile file)
+        {
+            //            long size = files.Sum(f => f.Length);
+
+            // full path to file in temp location
+            var filePath = Path.Combine("Uploads", file.FileName);
+            if (file.Length > 0)
+            {
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+            }
+            
+            return Ok(new { path = filePath });
         }
 
     }
