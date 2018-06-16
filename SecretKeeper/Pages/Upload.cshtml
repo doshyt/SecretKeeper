@@ -1,7 +1,7 @@
 ﻿@page
-@model ShareModel
+@model UploadModel
 @{ 
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Upload";
 }
 
 <!DOCTYPE html>
@@ -15,27 +15,11 @@
 </head>
 <body class="text-center" data-gr-c-s-loaded="true">
     <div class="form-secret">
-        <form id="main" class="form-secret" method="post">
-            <h1 class="h3 mb-3 font-weight-normal">Share your secret for one-time access</h1>
-            <label for="Secret" class="sr-only">Secret:</label>
-            <textarea rows="3" class="form-control" form="main" asp-for="@Model.Value" placeholder="1. Enter a secret text here &#x000D; 2. Share the generated link &#x000D; 3. Secret is gone once opened"></textarea>
-            <br />
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Generate one-time link</button>
-        </form>
-
-        @if (!string.IsNullOrEmpty(@Model.Token))
-        {
-            <p class="mb-3 text-muted">Right click -> Copy link address:</p>
-            <a href="@Model.Token">@Model.Token</a>
-        }
-    </div>
-    <!--
-    <div class="form-secret">
-        <form method="post" enctype="multipart/form-data" action="./api/secret/UploadFile">
+        <form method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <div class="col-md-10">
                     <p>Upload file to share privately:</p>
-                    <input type="file" name="file" />
+                    <input type="file"  asp-for="@Model.FileToUpload" />
                 </div>
             </div>
             <div class="form-group">
@@ -43,9 +27,13 @@
                     <input type="submit" value="Upload" />
                 </div>
             </div>
+            @if (!string.IsNullOrEmpty(@Model.Token))
+            {
+                <p class="mb-3 text-muted">Right click -> Copy link address:</p>
+                <a href="@Model.Token">@Model.Token</a>
+            }
         </form>
     </div>
-        -->
     <div class="fixed-bottom">
         <a class="" href="https://github.com/doshyt/SecretKeeper/blob/master/README.md">Is it secure? How the secrets are stored? Can I contribute?</a>
         <p>(Project page on GitHub)</p>
