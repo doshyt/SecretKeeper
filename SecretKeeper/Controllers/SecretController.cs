@@ -15,7 +15,7 @@ using System.Net.Http;
 namespace SecretKeeper.Controllers
 {
 
-    [Route("api/[controller]")]
+    
     public class SecretController : ControllerBase
     {
         private readonly ITimeLimitedDataProtector _protector;
@@ -78,28 +78,36 @@ namespace SecretKeeper.Controllers
             string link = $"https://{this.Request.Host}/api/secret/" + token;
             return Ok(link);
         }
+        
+        
+       [HttpPost("UploadFile", Name ="UploadF")]
+       public async Task<IActionResult> PostFile(IFormFile file)
+       {
 
-        [HttpPost("UploadFile", Name ="Upload")]
-        public async Task<IActionResult> PostFile(MultipartFormDataContent file)
-        {
-            //            long size = files.Sum(f => f.Length);
+           //            long size = files.Sum(f => f.Length);
 
-            // full path to file in temp location
-            string privateFileName = Hash.GetToken(_rndController);
-            // privateFileName += Path.GetExtension(file.FileName);
+           // full path to file in temp location
+           string privateFileName = Hash.GetToken(_rndController);
+           privateFileName += privateFileName.Split(".").Last();
+           // privateFileName += Path.GetExtension(file.FileName);
 
-            var basePath = Path.Combine("wwwroot", "Uploads");
-            var filePath = Path.Combine(basePath, privateFileName);
+           var basePath = Path.Combine("wwwroot", "Uploads");
+           var filePath = Path.Combine(basePath, privateFileName);
 
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
+           using (var stream = new FileStream(filePath, FileMode.Create))
+           {
+               await file.CopyToAsync(stream);
+           }
 
-            string link = $"https://{this.Request.Host}/api/secret/" + privateFileName;
+           string link = $"https://{this.Request.Host}/api/secret/" + privateFileName;
 
-            return Ok(link);
-        }
 
-    }
+
+           return Ok(link);
+        } 
+        
+         
+    
+
+}
 }

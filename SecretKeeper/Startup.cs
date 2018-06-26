@@ -57,6 +57,9 @@ namespace SecretKeeper
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Index}/{action}/");
+                routes.MapRoute(
+                    name: "upload",
+                    template: "{controller=Upload}/{token}/");
             });
         }
     }

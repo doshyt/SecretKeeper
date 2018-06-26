@@ -1,7 +1,7 @@
 ﻿@page
 @model UploadModel
 @{ 
-    ViewData["Title"] = "Upload";
+    ViewData["Title"] = "Home page";
 }
 
 <!DOCTYPE html>
@@ -14,12 +14,14 @@
     <title>Share your secret</title>
 </head>
 <body class="text-center" data-gr-c-s-loaded="true">
+
     <div class="form-secret">
         <form method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <div class="col-md-10">
                     <p>Upload file to share privately:</p>
-                    <input type="file"  asp-for="@Model.FileToUpload" />
+                    <!--                    <input type="file" asp-for="@Model.FileToUpload" />-->
+                    <input type="file" asp-for="@Model.FileToUpload"/>
                 </div>
             </div>
             <div class="form-group">
