@@ -20,7 +20,10 @@ namespace SecretKeeper
         {
             services.AddDbContext<SecretContext>(opt =>
                 opt.UseInMemoryDatabase("Secrets"));
-            
+
+            // TODO: Add secure headers
+            // TODO: Use HSTS
+
             /* HTTPS
             services.Configure<MvcOptions>(options =>
             {

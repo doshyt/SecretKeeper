@@ -14,6 +14,7 @@ namespace SecretKeeper.Controllers
     {
 
         private FileDataProtector _protector = new FileDataProtector();
+        // TODO: Implement secure random number generation
         private Random _rndController = new Random();
         
         public IActionResult Index(UploadItem model)
@@ -24,6 +25,9 @@ namespace SecretKeeper.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(UploadItem model, IFormFile FileToUpload)
         {
+            // TODO: Limit upload file size
+            // TODO: Secure upload according to best practices
+
             if (FileToUpload != null)
             {
                 string privateFileName = Hash.GetToken(_rndController);
@@ -54,6 +58,9 @@ namespace SecretKeeper.Controllers
         [HttpGet("{token}")]
         public IActionResult GetFile(string token)
         {
+            // TODO: Make it one-time link
+            // TODO: Cleanup after access
+            // TODO: Add proper error handling for invalid token
 
             string filename = token.Split("/").Last();
 

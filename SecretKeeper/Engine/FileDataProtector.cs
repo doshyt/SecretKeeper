@@ -18,9 +18,12 @@ namespace SecretKeeper.Engine
         {
             using (MemoryStream mStream = new MemoryStream())
             {
+                // TODO: Check if we can run this with one stream only
                 DataStream.Position = 0;
                 DataStream.CopyTo(mStream);
                 byte[] BytesData = mStream.ToArray();
+
+                // TODO: Make time configurable parameter or at least const
                 return _protector.Protect(BytesData, lifetime: TimeSpan.FromMinutes(5));
             }
 
@@ -30,6 +33,7 @@ namespace SecretKeeper.Engine
         {
             using (MemoryStream mStream = new MemoryStream())
             {
+                // TODO: Check if we can run this with one stream only
                 DataStream.Position = 0;
                 DataStream.CopyTo(mStream);
                 byte[] BytesData = mStream.ToArray();
@@ -47,6 +51,7 @@ namespace SecretKeeper.Engine
 
         private Dictionary<string, string> GetMimeTypes()
         {
+            // TODO: Find out if there is a better way to handle content types
             return new Dictionary<string, string>
             {
                 {".txt", "text/plain"},
