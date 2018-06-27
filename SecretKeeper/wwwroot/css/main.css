@@ -46,3 +46,8 @@ body {
 .form-secret .form-control:focus {
         z-index: 2;
     }
+
+    .form-secret #FileBrowse {
+        margin-bottom: 1rem;
+        background-color: transparent;
+    }
