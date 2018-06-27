@@ -10,7 +10,7 @@ namespace SecretKeeper.Engine
 {
     public class FileDataProtector
     {
-        IDataProtector _protector;
+        ITimeLimitedDataProtector _protector;
 
         public FileDataProtector()
         {
@@ -24,7 +24,19 @@ namespace SecretKeeper.Engine
                 DataStream.Position = 0;
                 DataStream.CopyTo(mStream);
                 byte[] BytesData = mStream.ToArray();
-                return _protector.Protect(BytesData);
+                return _protector.Protect(BytesData, lifetime: TimeSpan.FromMinutes(5));
+            }
+
+        }
+
+        public byte[] DecryptStream(MemoryStream DataStream)
+        {
+            using (MemoryStream mStream = new MemoryStream())
+            {
+                DataStream.Position = 0;
+                DataStream.CopyTo(mStream);
+                byte[] BytesData = mStream.ToArray();
+                return _protector.Unprotect(BytesData);
             }
 
         }
