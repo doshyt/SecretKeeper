@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using SecretKeeper.Pages;
+using SecretKeeper.Models;
 using SecretKeeper.Engine;
 using Microsoft.AspNetCore.Http;
 
@@ -16,15 +16,14 @@ namespace SecretKeeper.Controllers
 
         private FileDataProtector _protector = new FileDataProtector();
         private Random _rndController = new Random();
-          /*    public IActionResult Upload(UploadModel model)
-              {
-                  return View(model);
-              }
-              */
-              
+        
+        public IActionResult Index(UploadItem model)
+        {
+            return View(model);
+        }
 
         [HttpPost]
-        public async Task<IActionResult> UploadFile(UploadModel model, IFormFile FileToUpload)
+        public async Task<IActionResult> Post(UploadItem model, IFormFile FileToUpload)
         {
             string privateFileName = Hash.GetToken(_rndController);
             privateFileName += "." + FileToUpload.FileName.Split(".").Last();
@@ -46,12 +45,11 @@ namespace SecretKeeper.Controllers
 
             }
 
-            model.Token = $"https://{this.Request.Host}/Upload/" + privateFileName;
-
-            return View("~/Pages/Upload.cshtml", model);
+            model.Token = $"https://{this.Request.Host}/upload/" + privateFileName;
+            return View("Index", model);
         }
 
-        [HttpGet("upload/{token}")]
+        [HttpGet("{token}")]
         public IActionResult GetFile(string token)
         {
 
@@ -64,11 +62,11 @@ namespace SecretKeeper.Controllers
             var memory = new MemoryStream();
             using (var stream = new FileStream(path, FileMode.Open))
             {
-                stream.CopyToAsync(memory);
+                stream.CopyTo(memory);
             }
-            memory.Position = 0;
+
             String contentType = _protector.GetContentType(path);
-            return File(memory, contentType, Path.GetFileName(path));
+            return File(_protector.DecryptStream(memory), contentType, Path.GetFileName(path));
         }
     }
 }
