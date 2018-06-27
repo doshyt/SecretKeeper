@@ -20,6 +20,8 @@ docker-compose -f docker-compose.yml -f docker-compose.override.yml --no-ansi bu
 docker-compose -f docker-compose.yml -f docker-compose.override.yml --no-ansi up -d --no-build --force-recreate --remove-orphans
 ```
 
+Replace a default certificate in Certificates\cert.pfx with a production one that you would like to use for the web service.
+
 By default, the container publishes the port 44340 (https) to the host and makes it accessbile to other compiters on the network (firewall rules need to be added).
 
 # Usage
