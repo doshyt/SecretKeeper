@@ -261,3 +261,4 @@ __pycache__/
 
 # VS Code
 .vscode
+SecretKeeper/Certificates/key*.xml
