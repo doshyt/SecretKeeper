@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Security.Cryptography;
 using Microsoft.AspNetCore.DataProtection;
 
 namespace SecretKeeper.Engine

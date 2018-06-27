@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,7 +26,6 @@ namespace SecretKeeper.Controllers
         {
             string privateFileName = Hash.GetToken(_rndController);
             privateFileName += "." + FileToUpload.FileName.Split(".").Last();
-            // privateFileName += Path.GetExtension(file.FileName);
 
             var basePath = Path.Combine("wwwroot", "Uploads");
             var filePath = Path.Combine(basePath, privateFileName);
