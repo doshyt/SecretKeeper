@@ -24,26 +24,30 @@ namespace SecretKeeper.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(UploadItem model, IFormFile FileToUpload)
         {
-            string privateFileName = Hash.GetToken(_rndController);
-            privateFileName += "." + FileToUpload.FileName.Split(".").Last();
-
-            var basePath = Path.Combine("wwwroot", "Uploads");
-            var filePath = Path.Combine(basePath, privateFileName);
-
-            using (var MemStream = new MemoryStream())
+            if (FileToUpload != null)
             {
-                await FileToUpload.CopyToAsync(MemStream);
-                byte[] ByteData = _protector.EncryptStream(MemStream);
-                Stream EncryptedStream = new MemoryStream(ByteData);
+                string privateFileName = Hash.GetToken(_rndController);
+                privateFileName += "." + FileToUpload.FileName.Split(".").Last();
 
-                using (var FileStream = new FileStream(filePath, FileMode.Create))
+                var basePath = Path.Combine("wwwroot", "Uploads");
+                var filePath = Path.Combine(basePath, privateFileName);
+
+                using (var MemStream = new MemoryStream())
                 {
-                    await EncryptedStream.CopyToAsync(FileStream);
+                    await FileToUpload.CopyToAsync(MemStream);
+                    byte[] ByteData = _protector.EncryptStream(MemStream);
+                    Stream EncryptedStream = new MemoryStream(ByteData);
+
+                    using (var FileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await EncryptedStream.CopyToAsync(FileStream);
+                    }
+
                 }
 
+                model.Token = $"https://{this.Request.Host}/upload/" + privateFileName;
             }
 
-            model.Token = $"https://{this.Request.Host}/upload/" + privateFileName;
             return View("Index", model);
         }
 
