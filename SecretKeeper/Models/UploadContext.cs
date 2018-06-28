@@ -2,13 +2,12 @@
 
 namespace SecretKeeper.Models
 {
-    public class SecretContext: DbContext
+    public class UploadContext: DbContext
     {
-        public SecretContext(DbContextOptions<SecretContext> options)
+        public UploadContext(DbContextOptions<UploadContext> options)
             : base(options)
         {
         }
-        public DbSet<SecretItem> SecretItems { get; set; }
         public DbSet<UploadItem> UploadItems { get; set; }
     }
 }

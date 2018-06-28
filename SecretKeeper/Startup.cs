@@ -21,6 +21,10 @@ namespace SecretKeeper
             services.AddDbContext<SecretContext>(opt =>
                 opt.UseInMemoryDatabase("Secrets"));
 
+            services.AddDbContext<UploadContext>(opt =>
+                opt.UseInMemoryDatabase("Uploads"));
+
+
             // TODO: Add secure headers
             // TODO: Use HSTS
 

@@ -6,17 +6,24 @@ using Microsoft.AspNetCore.Mvc;
 using SecretKeeper.Models;
 using SecretKeeper.Engine;
 using Microsoft.AspNetCore.Http;
+using System.Security.Cryptography;
 
 namespace SecretKeeper.Controllers
 {
     [Route("[controller]")]
     public class UploadController : Controller
     {
-
-        private FileDataProtector _protector = new FileDataProtector();
-        // TODO: Implement secure random number generation
-        private Random _rndController = new Random();
         
+        private readonly FileDataProtector _protector = new FileDataProtector();
+        // TODO: Implement secure random number generation
+        private readonly Random _rndController = new Random();
+        private readonly UploadContext _context;
+
+        public UploadController(UploadContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult Index(UploadItem model)
         {
             return View(model);
@@ -50,6 +57,8 @@ namespace SecretKeeper.Controllers
                 }
 
                 model.Token = $"https://{this.Request.Host}/upload/" + privateFileName;
+                _context.UploadItems.Add(new UploadItem { Token = privateFileName, OriginalName = FileToUpload.FileName, CreatedDate = DateTime.Now });
+                _context.SaveChanges();
             }
 
             return View("Index", model);
@@ -61,6 +70,29 @@ namespace SecretKeeper.Controllers
             // TODO: Make it one-time link
             // TODO: Cleanup after access
             // TODO: Add proper error handling for invalid token
+
+            var id = _context.UploadItems
+           .Where(b => b.Token == token)
+            .FirstOrDefault();
+
+            UploadItem item = null;
+            string originalName = ""; 
+            try
+            {
+                item = _context.UploadItems.Find(id.Id);
+                originalName = item.OriginalName;
+            }
+
+            catch (NullReferenceException)
+            {
+                return RedirectToAction("Index", "StaticFile");
+                //return Ok("The requested file has not been found");
+            }
+
+            catch (CryptographicException)
+            {
+                return Ok("The requested file has expired");
+            }
 
             string filename = token.Split("/").Last();
 
@@ -74,8 +106,11 @@ namespace SecretKeeper.Controllers
                 stream.CopyTo(memory);
             }
 
+            _context.UploadItems.Remove(item);
+            _context.SaveChanges();
+
             String contentType = _protector.GetContentType(path);
-            return File(_protector.DecryptStream(memory), contentType, Path.GetFileName(path));
+            return File(_protector.DecryptStream(memory), contentType, originalName);
         }
     }
 }
