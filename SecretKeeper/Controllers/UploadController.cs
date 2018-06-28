@@ -67,8 +67,6 @@ namespace SecretKeeper.Controllers
         [HttpGet("{token}")]
         public IActionResult GetFile(string token)
         {
-            // TODO: Make it one-time link
-            // TODO: Cleanup after access
             // TODO: Add proper error handling for invalid token
 
             var id = _context.UploadItems
@@ -76,7 +74,12 @@ namespace SecretKeeper.Controllers
             .FirstOrDefault();
 
             UploadItem item = null;
-            string originalName = ""; 
+            string originalName = "";
+            string filename = token.Split("/").Last();
+            string path = Path.Combine(
+                            Directory.GetCurrentDirectory(),
+                            "wwwroot\\Uploads", filename);
+
             try
             {
                 item = _context.UploadItems.Find(id.Id);
@@ -86,19 +89,15 @@ namespace SecretKeeper.Controllers
             catch (NullReferenceException)
             {
                 return RedirectToAction("Index", "StaticFile");
-                //return Ok("The requested file has not been found");
             }
 
             catch (CryptographicException)
             {
+                // cleanup file if it has expired
+                // TODO: implement scheduled cleanup for expired but never accessed file
+                FileOperator.DeleteUploadedFile(path);
                 return Ok("The requested file has expired");
             }
-
-            string filename = token.Split("/").Last();
-
-            var path = Path.Combine(
-                     Directory.GetCurrentDirectory(),
-                     "wwwroot\\Uploads", filename);
 
             var memory = new MemoryStream();
             using (var stream = new FileStream(path, FileMode.Open))
@@ -108,6 +107,11 @@ namespace SecretKeeper.Controllers
 
             _context.UploadItems.Remove(item);
             _context.SaveChanges();
+
+            if (FileOperator.DeleteUploadedFile(path) == -1)
+            {
+                return BadRequest("File operation failed");
+            }
 
             String contentType = _protector.GetContentType(path);
             return File(_protector.DecryptStream(memory), contentType, originalName);
