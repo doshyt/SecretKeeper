@@ -44,15 +44,7 @@ namespace SecretKeeper.Engine
 
         public string GetContentType(string path)
         {
-            var types = GetMimeTypes();
-            var ext = Path.GetExtension(path).ToLowerInvariant();
-            return types[ext];
-        }
-
-        private Dictionary<string, string> GetMimeTypes()
-        {
-            // TODO: Find out if there is a better way to handle content types
-            return new Dictionary<string, string>
+            var types = new Dictionary<string, string>
             {
                 {".txt", "text/plain"},
                 {".pdf", "application/pdf"},
@@ -65,6 +57,17 @@ namespace SecretKeeper.Engine
                 {".gif", "image/gif"},
                 {".csv", "text/csv"}
             };
+
+            var ext = Path.GetExtension(path).ToLowerInvariant();
+
+            if (types.ContainsKey(ext))
+            {
+                return types[ext];
+            }
+            else
+            {
+                return "application/octet-stream";
+            }
         }
 
     }

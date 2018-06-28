@@ -7,6 +7,7 @@ using SecretKeeper.Models;
 using SecretKeeper.Engine;
 using Microsoft.AspNetCore.Http;
 using System.Security.Cryptography;
+using System.Net;
 
 namespace SecretKeeper.Controllers
 {
@@ -32,14 +33,24 @@ namespace SecretKeeper.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(UploadItem model, IFormFile FileToUpload)
         {
-            // TODO: Limit upload file size
-            // TODO: Secure upload according to best practices
 
             if (FileToUpload != null)
             {
-                string privateFileName = Hash.GetToken(_rndController);
-                privateFileName += "." + FileToUpload.FileName.Split(".").Last();
+                // limit size to 100MB
+                if (FileToUpload.Length > 104857600)
+                {
+                    return BadRequest("File is to large. Allowed size < 100MB");
+                }
 
+                string privateFileName = Hash.GetToken(_rndController);
+                string safeFileName = WebUtility.HtmlEncode(Path.GetFileName(FileToUpload.FileName));
+                string fileExtension = Path.GetExtension(safeFileName);
+                
+                if (!String.IsNullOrEmpty(fileExtension))
+                {
+                    privateFileName += "." + fileExtension;
+                }
+                
                 var basePath = Path.Combine("wwwroot", "Uploads");
                 var filePath = Path.Combine(basePath, privateFileName);
 
@@ -57,7 +68,7 @@ namespace SecretKeeper.Controllers
                 }
 
                 model.Token = $"https://{this.Request.Host}/upload/" + privateFileName;
-                _context.UploadItems.Add(new UploadItem { Token = privateFileName, OriginalName = FileToUpload.FileName, CreatedDate = DateTime.Now });
+                _context.UploadItems.Add(new UploadItem { Token = privateFileName, OriginalName = safeFileName, CreatedDate = DateTime.Now });
                 _context.SaveChanges();
             }
 
@@ -67,15 +78,13 @@ namespace SecretKeeper.Controllers
         [HttpGet("{token}")]
         public IActionResult GetFile(string token)
         {
-            // TODO: Add proper error handling for invalid token
-
             var id = _context.UploadItems
            .Where(b => b.Token == token)
             .FirstOrDefault();
 
             UploadItem item = null;
             string originalName = "";
-            string filename = token.Split("/").Last();
+            string filename = token;
             string path = Path.Combine(
                             Directory.GetCurrentDirectory(),
                             "wwwroot\\Uploads", filename);
