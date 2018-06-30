@@ -5,8 +5,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - target: 44340
-        published: 44340
+      - target: 443
+        published: 443
         protocol: tcp
         mode: host
 
