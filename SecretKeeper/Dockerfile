@@ -14,6 +14,8 @@ RUN dotnet publish SecretKeeper.csproj -c Release -o /app
 
 FROM base AS final
 COPY --from=publish /app .
-RUN mkdir wwwroot\Uploads
+WORKDIR /app/wwwroot
+RUN mkdir Uploads
+WORKDIR /app
 COPY ./SecretKeeper/Certificates/cert.pfx /app/Certificates/cert.pfx
 ENTRYPOINT ["dotnet", "SecretKeeper.dll"]
