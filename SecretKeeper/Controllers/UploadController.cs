@@ -85,9 +85,7 @@ namespace SecretKeeper.Controllers
             UploadItem item = null;
             string originalName = "";
             string filename = token;
-            string path = Path.Combine(
-                            Directory.GetCurrentDirectory(),
-                            "wwwroot\\Uploads", filename);
+            string path = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot", "Uploads", filename);
 
             try
             {
