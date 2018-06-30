@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.1-aspnetcore-runtime-nanoserver-1803 AS base
+FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
 WORKDIR /app
 
 FROM microsoft/dotnet:2.1-sdk AS build
@@ -14,6 +14,6 @@ RUN dotnet publish SecretKeeper.csproj -c Release -o /app
 
 FROM base AS final
 COPY --from=publish /app .
-#RUN mkdir Uploads
+RUN mkdir wwwroot\Uploads
 COPY ./SecretKeeper/Certificates/cert.pfx /app/Certificates/cert.pfx
 ENTRYPOINT ["dotnet", "SecretKeeper.dll"]
