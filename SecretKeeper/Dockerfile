@@ -18,4 +18,5 @@ WORKDIR /app/wwwroot
 RUN mkdir Uploads
 WORKDIR /app
 COPY ./SecretKeeper/Certificates/cert.pfx /app/Certificates/cert.pfx
+EXPOSE 443 443
 ENTRYPOINT ["dotnet", "SecretKeeper.dll"]
