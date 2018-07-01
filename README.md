@@ -5,10 +5,18 @@ Have you ever wanted to share something and make sure it's gone once it is acces
 
 Powered by ASP.NET Core 2.1 and Docker.
 
+# Try it in action
+I'm currently hosting a demo instance of SecretKeeper with a default self-sigend cert (expect a warning from browser!) in Azure:
+
+https://secretkeeper.westeurope.azurecontainer.io
+
+Check it out!
+
 # Run
 SecretKeeper is built in, with and for Docker on *Windows* and *Linux*. It relies on the Docker image *microsoft/dotnet:2.1-aspnetcore-runtime* and supports all OS kernels the the base image does. 
 SecretKeeper is released in the form of a Docker image and publiched to the Docker Hub. 
-To get it up and running, simply pull **igora/secretkeeper:latest**.
+
+To get it up and running, simply pull **igora/secretkeeper:latest**
 
 To build and run it from the sources:
 
