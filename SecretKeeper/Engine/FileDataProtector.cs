@@ -11,7 +11,8 @@ namespace SecretKeeper.Engine
 
         public FileDataProtector()
         {
-            _protector = DataProtectionProvider.Create(new DirectoryInfo(@"c:\app\Certificates\")).CreateProtector("Files.TimeLimited").ToTimeLimitedDataProtector();
+            _protector = DataProtectionProvider.Create(new DirectoryInfo("Certificates"))
+                .CreateProtector("Files.TimeLimited").ToTimeLimitedDataProtector();
         }
 
         public byte[] EncryptStream(Stream dataStream)
