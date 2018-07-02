@@ -3,7 +3,7 @@
 
 namespace SecretKeeper.Engine
 {
-    public class FileOperator
+    public static class FileOperator
     {
         public static int DeleteUploadedFile(string path)
         {

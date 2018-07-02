@@ -7,37 +7,37 @@ namespace SecretKeeper.Engine
 {
     public class FileDataProtector
     {
-        ITimeLimitedDataProtector _protector;
+        readonly ITimeLimitedDataProtector _protector;
 
         public FileDataProtector()
         {
             _protector = DataProtectionProvider.Create(new DirectoryInfo(@"c:\app\Certificates\")).CreateProtector("Files.TimeLimited").ToTimeLimitedDataProtector();
         }
 
-        public byte[] EncryptStream(Stream DataStream)
+        public byte[] EncryptStream(Stream dataStream)
         {
-            using (MemoryStream mStream = new MemoryStream())
+            using (var mStream = new MemoryStream())
             {
                 // TODO: Check if we can run this with one stream only
-                DataStream.Position = 0;
-                DataStream.CopyTo(mStream);
-                byte[] BytesData = mStream.ToArray();
+                dataStream.Position = 0;
+                dataStream.CopyTo(mStream);
+                var bytesData = mStream.ToArray();
 
                 // TODO: Make time configurable parameter or at least const
-                return _protector.Protect(BytesData, lifetime: TimeSpan.FromMinutes(5));
+                return _protector.Protect(bytesData, lifetime: TimeSpan.FromMinutes(5));
             }
 
         }
 
-        public byte[] DecryptStream(MemoryStream DataStream)
+        public byte[] DecryptStream(MemoryStream dataStream)
         {
-            using (MemoryStream mStream = new MemoryStream())
+            using (var mStream = new MemoryStream())
             {
                 // TODO: Check if we can run this with one stream only
-                DataStream.Position = 0;
-                DataStream.CopyTo(mStream);
-                byte[] BytesData = mStream.ToArray();
-                return _protector.Unprotect(BytesData);
+                dataStream.Position = 0;
+                dataStream.CopyTo(mStream);
+                var bytesData = mStream.ToArray();
+                return _protector.Unprotect(bytesData);
             }
 
         }
@@ -60,14 +60,7 @@ namespace SecretKeeper.Engine
 
             var ext = Path.GetExtension(path).ToLowerInvariant();
 
-            if (types.ContainsKey(ext))
-            {
-                return types[ext];
-            }
-            else
-            {
-                return "application/octet-stream";
-            }
+            return types.ContainsKey(ext) ? types[ext] : "application/octet-stream";
         }
 
     }

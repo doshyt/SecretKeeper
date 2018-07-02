@@ -31,22 +31,22 @@ namespace SecretKeeper.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(UploadItem model, IFormFile FileToUpload)
+        public async Task<IActionResult> Post(UploadItem model, IFormFile fileToUpload)
         {
 
-            if (FileToUpload != null)
+            if (fileToUpload != null)
             {
                 // limit size to 100MB
-                if (FileToUpload.Length > 104857600)
+                if (fileToUpload.Length > 104857600)
                 {
                     return BadRequest("File is to large. Allowed size < 100MB");
                 }
 
-                string privateFileName = Hash.GetToken(_rndController);
-                string safeFileName = WebUtility.HtmlEncode(Path.GetFileName(FileToUpload.FileName));
-                string fileExtension = Path.GetExtension(safeFileName);
+                var privateFileName = Hash.GetToken(_rndController);
+                var safeFileName = WebUtility.HtmlEncode(Path.GetFileName(fileToUpload.FileName));
+                var fileExtension = Path.GetExtension(safeFileName);
                 
-                if (!String.IsNullOrEmpty(fileExtension))
+                if (!string.IsNullOrEmpty(fileExtension))
                 {
                     privateFileName += "." + fileExtension;
                 }
@@ -54,15 +54,15 @@ namespace SecretKeeper.Controllers
                 var basePath = Path.Combine("wwwroot", "Uploads");
                 var filePath = Path.Combine(basePath, privateFileName);
 
-                using (var MemStream = new MemoryStream())
+                using (var memStream = new MemoryStream())
                 {
-                    await FileToUpload.CopyToAsync(MemStream);
-                    byte[] ByteData = _protector.EncryptStream(MemStream);
-                    Stream EncryptedStream = new MemoryStream(ByteData);
+                    await fileToUpload.CopyToAsync(memStream);
+                    var byteData = _protector.EncryptStream(memStream);
+                    Stream encryptedStream = new MemoryStream(byteData);
 
-                    using (var FileStream = new FileStream(filePath, FileMode.Create))
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
-                        await EncryptedStream.CopyToAsync(FileStream);
+                        await encryptedStream.CopyToAsync(fileStream);
                     }
 
                 }
@@ -79,13 +79,12 @@ namespace SecretKeeper.Controllers
         public IActionResult GetFile(string token)
         {
             var id = _context.UploadItems
-           .Where(b => b.Token == token)
-            .FirstOrDefault();
+            .FirstOrDefault(b => b.Token == token);
 
             UploadItem item = null;
-            string originalName = "";
-            string filename = token;
-            string path = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot", "Uploads", filename);
+            var originalName = "";
+            var filename = token;
+            var path = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot", "Uploads", filename);
 
             try
             {
@@ -120,7 +119,7 @@ namespace SecretKeeper.Controllers
                 return BadRequest("File operation failed");
             }
 
-            String contentType = _protector.GetContentType(path);
+            var contentType = _protector.GetContentType(path);
             return File(_protector.DecryptStream(memory), contentType, originalName);
         }
     }

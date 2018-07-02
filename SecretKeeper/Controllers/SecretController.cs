@@ -30,16 +30,15 @@ namespace SecretKeeper.Controllers
         {
 
             var id = _context.SecretItems
-                    .Where(b => b.Token == token)
-                    .FirstOrDefault();
+                    .FirstOrDefault(b => b.Token == token);
             try
             {
                 var item = _context.SecretItems.Find(id.Id);
-                string SecretValue = item.Value;
+                var secretValue = item.Value;
                 _context.SecretItems.Remove(item);
                 _context.SaveChanges();
 
-                return Ok(_protector.Unprotect(SecretValue));
+                return Ok(_protector.Unprotect(secretValue));
             }
             catch (NullReferenceException)
             {
@@ -66,11 +65,11 @@ namespace SecretKeeper.Controllers
                 return Ok();
             }
 
-            string token = Hash.GetToken(_rndController);
-            string protectedValue = _protector.Protect(item.Value, lifetime: TimeSpan.FromMinutes(5));
+            var token = Hash.GetToken(_rndController);
+            var protectedValue = _protector.Protect(item.Value, lifetime: TimeSpan.FromMinutes(5));
             _context.SecretItems.Add(new SecretItem { Value = protectedValue, Token = token });
             _context.SaveChanges();
-            string link = $"https://{this.Request.Host}/api/secret/" + token;
+            var link = $"https://{this.Request.Host}/api/secret/" + token;
             return Ok(link);
         }
     

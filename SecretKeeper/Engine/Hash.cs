@@ -8,12 +8,12 @@ namespace SecretKeeper.Engine
     {
         public static string GetToken(Random rndController)
         {
-            using (SHA256 ShaProvider = SHA256.Create())
+            using (var shaProvider = SHA256.Create())
             {
-                int randValue = rndController.Next(1, 10000000);
-                byte[] data = ShaProvider.ComputeHash(Encoding.UTF8.GetBytes(randValue.ToString()));
-                StringBuilder sBuilder = new StringBuilder();
-                for (int i = 0; i < data.Length; i++)
+                var randValue = rndController.Next(1, 10000000);
+                var data = shaProvider.ComputeHash(Encoding.UTF8.GetBytes(randValue.ToString()));
+                var sBuilder = new StringBuilder();
+                for (var i = 0; i < data.Length; i++)
                 {
                     sBuilder.Append(data[i].ToString("x2"));
                 }
