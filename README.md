@@ -23,7 +23,7 @@ Open `https://<your IP>/upload` in a browser. Select a file to share and click *
 - Configured with HTTPS by default, certificate is imported from PFX file under `Certificates/cert.pfx`.
 
 # Build and Run
-SecretKeeper is built in, with and for Docker on *Windows* and *Linux*. It relies on the Docker image *microsoft/dotnet:2.1-aspnetcore-runtime* and supports all OS kernels the the base image does. 
+SecretKeeper is built in, with and for Docker on *Windows* and *Linux*. It relies on the Docker image *microsoft/dotnet:2.2-aspnetcore-runtime* and supports all OS kernels the the base image does. 
 SecretKeeper is released in the form of a Docker image and publiched to the Docker Hub. 
 
 To get it up and running, simply pull **igora/secretkeeper:latest**
