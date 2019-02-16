@@ -63,6 +63,7 @@ namespace SecretKeeper
                         listenOptions =>
                         {
                             var certificate = LoadCertificate(config, environment);
+
                             listenOptions.UseHttps(certificate);
                            
                         });

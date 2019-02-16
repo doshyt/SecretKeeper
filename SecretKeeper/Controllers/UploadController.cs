@@ -67,7 +67,7 @@ namespace SecretKeeper.Controllers
 
                 }
 
-                model.Token = $"https://{this.Request.Host}/upload/" + privateFileName;
+                model.Token = $"https://{Request.Host}/upload/" + privateFileName;
                 _context.UploadItems.Add(new UploadItem { Token = privateFileName, OriginalName = safeFileName, CreatedDate = DateTime.Now });
                 _context.SaveChanges();
             }
@@ -81,8 +81,8 @@ namespace SecretKeeper.Controllers
             var id = _context.UploadItems
             .FirstOrDefault(b => b.Token == token);
 
-            UploadItem item = null;
-            var originalName = "";
+            UploadItem item;
+            string originalName;
             var filename = token;
             var path = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot", "Uploads", filename);
 

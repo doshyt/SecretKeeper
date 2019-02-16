@@ -7,7 +7,7 @@ namespace SecretKeeper.Engine
 {
     public class FileDataProtector
     {
-        readonly ITimeLimitedDataProtector _protector;
+        private readonly ITimeLimitedDataProtector _protector;
 
         public FileDataProtector()
         {
@@ -25,7 +25,7 @@ namespace SecretKeeper.Engine
                 var bytesData = mStream.ToArray();
 
                 // TODO: Make time configurable parameter or at least const
-                return _protector.Protect(bytesData, lifetime: TimeSpan.FromMinutes(5));
+                return _protector.Protect(bytesData, TimeSpan.FromMinutes(5));
             }
 
         }
