@@ -66,7 +66,16 @@ namespace SecretKeeper.Controllers
             }
 
             var token = Hash.GetToken(_rndController);
-            var protectedValue = _protector.Protect(item.Value, lifetime: TimeSpan.FromMinutes(5));
+
+
+            if (item.TimeToLive == null)
+            {
+                // defaults to 5 minutes
+                item.TimeToLive = "5";
+            }
+           
+
+            var protectedValue = _protector.Protect(item.Value, TimeSpan.FromMinutes(Convert.ToInt32(item.TimeToLive)));
             _context.SecretItems.Add(new SecretItem { Value = protectedValue, Token = token });
             _context.SaveChanges();
             var link = $"https://{this.Request.Host}/api/secret/" + token;
