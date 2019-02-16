@@ -3,14 +3,10 @@ Have you ever wanted to share something and make sure it's gone once it is acces
 
 ![Example of UI](docs/UI_example.PNG "Example of UI")
 
-Powered by ASP.NET Core 2.1 and Docker.
+Powered by ASP.NET Core 2.2 and Docker.
 
 # Try it in action
-I'm currently hosting a demo instance of SecretKeeper with a default self-sigend cert (expect a warning from browser!) in Azure:
-
-https://secretkeeper.westeurope.azurecontainer.io
-
-Check it out!
+Live demo is temporarily offline. The fastest way to get it up and running is to [pull the Docker image](#build-and-run)
 
 # Share a secret
 Open `https://<your IP>/index` in a browser. Enter a secret text to be shared and press *Generate one-time link*. Copy the link and share it with someone. When the link is accessed, the content is rendered to the browser. At the same time, the link and the secret are erased and gone forever.
