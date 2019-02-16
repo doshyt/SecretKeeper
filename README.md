@@ -58,7 +58,7 @@ Content-Type: application/json
 Cache-Control: no-cache
 
 {
-"Value": "<SECRET HERE>"
+"Value": "<SECRET HERE>",
 "TimeToLive": "10"
 }
 ```
