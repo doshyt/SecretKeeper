@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +25,8 @@ namespace SecretKeeper
             services.AddDbContext<UploadContext>(opt =>
                 opt.UseInMemoryDatabase("Uploads"));
 
+            services.AddDataProtection().SetApplicationName("SecretKeeper");
+
 
             // TODO: Add secure headers
             // TODO: Use HSTS
@@ -35,7 +38,7 @@ namespace SecretKeeper
             });
             */
 
-            services.AddMvc();
+           services.AddMvc();
 
         }
 
@@ -52,6 +55,8 @@ namespace SecretKeeper
             app.UseRewriter(options);
             */
             app.UseStaticFiles();
+            app.UseHsts();
+            app.UseHttpsRedirection();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

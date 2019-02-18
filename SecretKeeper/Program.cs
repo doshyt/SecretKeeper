@@ -28,7 +28,7 @@ namespace SecretKeeper
         {
             var configuration = options.ApplicationServices.GetRequiredService<IConfiguration>();
             var environment = options.ApplicationServices.GetRequiredService<IHostingEnvironment>();
-
+            
             var endpoints = configuration.GetSection("HttpServer:Endpoints")
                 .GetChildren()
                 .ToDictionary(section => section.Key, section =>
