@@ -27,17 +27,6 @@ namespace SecretKeeper
 
             services.AddDataProtection().SetApplicationName("SecretKeeper");
 
-
-            // TODO: Add secure headers
-            // TODO: Use HSTS
-
-            /* HTTPS
-            services.Configure<MvcOptions>(options =>
-            {
-                options.Filters.Add(new RequireHttpsAttribute());
-            });
-            */
-
            services.AddMvc();
 
         }
@@ -50,10 +39,6 @@ namespace SecretKeeper
                 app.UseDeveloperExceptionPage();
             }
 
-            /* HTTPS
-            var options = new RewriteOptions().AddRedirectToHttps();
-            app.UseRewriter(options);
-            */
             app.UseStaticFiles();
             app.UseHsts();
             app.UseHttpsRedirection();
