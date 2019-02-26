@@ -66,6 +66,6 @@ The response returns a link to the secret. The lifespan of a secret is limited t
 - [x] Prettify UI
 - [x] Add Linux support
 - [x] Implement file sharing
-- [ ] Add TimeToLive for secret and upload API and UI
+- [x] Add TimeToLive for secret and upload API and UI
 - [ ] Support AppService as deployment option
 - [ ] Add integration to secret providers (Hashicorp Vault, Azure KeyVault)
