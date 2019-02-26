@@ -17,8 +17,22 @@ namespace SecretKeeper.Pages
         public string Token { get; set; } = "";
 
         [BindProperty]
+        public Ttl TimeToLive { get; set; }
+
+        [BindProperty]
         [MaxLength(3000)]
         public string Value { get; set; }
+
+        public enum Ttl
+        {
+            [Display(Name = "5 min")]
+            A = 5,
+            [Display(Name = "20 min")]
+            B = 20,
+            [Display(Name = "60 min")]
+            C = 60
+        };
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (Value != null)
@@ -29,10 +43,29 @@ namespace SecretKeeper.Pages
                     SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11
                 };
 
+                string ttlString;
+                switch (@TimeToLive)
+                {
+                    case Ttl.A:
+                        ttlString = "5";
+                        break;
+                    case Ttl.B:
+                        ttlString = "20";
+                        break;
+                    case Ttl.C:
+                        ttlString = "60";
+                        break;
+                    default:
+                        ttlString = "5";
+                        break;
+                }
+
                 HttpClient client = new HttpClient(handler);
                 var SecretValue = new Dictionary<string, string>()
                 {
-                    { "Value", @Value.Replace("\n", Environment.NewLine) }
+
+                        { "Value", @Value.Replace("\n", Environment.NewLine)},
+                        { "TimeToLive", ttlString}
                 };
                 var response = await client.PostAsync($"https://{this.Request.Host}/api/secret/",
                     new StringContent(JsonConvert.SerializeObject(SecretValue, Formatting.Indented), Encoding.UTF8, "application/json"));
