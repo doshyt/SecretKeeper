@@ -18,20 +18,31 @@
         <a class="" href="~/upload">Share files privately with SecretKeeper</a>
     </div>
     <div class="form-secret">
-        
 
-        <form id="main" class="form-secret" method="post">
-            <h1 class="h3 mb-3 font-weight-normal">Share your secret for one-time access</h1>
-            <label for="Secret" class="sr-only">Secret:</label>
-            <textarea rows="3" class="form-control" form="main" asp-for="@Model.Value" placeholder="1. Enter a secret text here &#x000D; 2. Share the generated link &#x000D; 3. Secret is gone once opened"></textarea>
-            <br />
 
-            @Html.DropDownListFor(m => Model.TimeToLive, Html.GetEnumSelectList(typeof(@ShareModel.Ttl)))
+        @if (@Model.Value != "Processed")
+
+        {
+            <form id="main" class="form-secret" method="post">
+                <h1 class="h3 mb-3 font-weight-normal">Share your secret for one-time access</h1>
+                <label for="Secret" class="sr-only">Secret:</label>
+
+                <textarea rows="3" id="1" class="form-control" form="main" asp-for="@Model.Value" placeholder="1. Enter a secret text here &#x000D; 2. Share the generated link &#x000D; 3. Secret is gone once opened"></textarea>
+
+                <br />
+
+                @Html.DropDownListFor(m => Model.TimeToLive, Html.GetEnumSelectList(typeof(@ShareModel.Ttl)))
+                <br />
+                <br />
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Generate one-time link</button>
+            </form>
+        }
+        else
+        {
+            <a href="~/index" class="btn btn-lg btn-primary btn-block">Start over?</a>
             <br />
-            <br />
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Generate one-time link</button>
-        </form>
-        
+        }
+
         @if (!string.IsNullOrEmpty(@Model.Token))
         {
             <p class="mb-3 text-muted">Right click -> Copy link address:</p>

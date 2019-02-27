@@ -74,6 +74,7 @@ namespace SecretKeeper.Pages
 
             }
 
+            Value = "Processed";
             return Page();
         }
     }
