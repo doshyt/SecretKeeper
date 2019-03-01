@@ -19,7 +19,7 @@ namespace SecretKeeper.Controllers
 
         public SecretController(SecretContext context)
         {
-            _protector = DataProtectionProvider.Create(new DirectoryInfo(@"c:\app\Certificates\")).CreateProtector("Secrets.TimeLimited").ToTimeLimitedDataProtector();
+            _protector = DataProtectionProvider.Create("SecretKeeper").CreateProtector("Secrets.TimeLimited").ToTimeLimitedDataProtector();
             _rndController = new Random();
             _context = context;
 
