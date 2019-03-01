@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -27,7 +28,15 @@ namespace SecretKeeper
 
             services.AddDataProtection().SetApplicationName("SecretKeeper");
 
-           services.AddMvc();
+            services.AddMvc();
+
+            services.AddHsts(options =>
+            {
+                options.Preload = true;
+                options.IncludeSubDomains = true;
+                options.MaxAge = TimeSpan.FromDays(360);
+            });
+
 
         }
 
@@ -39,8 +48,18 @@ namespace SecretKeeper
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseStaticFiles();
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("X-Frame-Options", "DENY");
+                context.Response.Headers.Add("X-XSS-Protection", "1; mode=block");
+                context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+                context.Response.Headers.Add("Cache-control", "no-store");
+                context.Response.Headers.Add("Pragma", "no-cache");
+                await next();
+            });
+
             app.UseHsts();
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
             app.UseMvc(routes =>
             {
