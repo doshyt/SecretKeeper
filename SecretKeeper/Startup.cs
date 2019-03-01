@@ -29,6 +29,7 @@ namespace SecretKeeper
             services.AddDataProtection().SetApplicationName("SecretKeeper");
 
             services.AddMvc();
+            services.AddHostedService<ExpiredRecordsCleaner>();
 
             services.AddHsts(options =>
             {

@@ -73,10 +73,11 @@ namespace SecretKeeper.Controllers
                 // defaults to 5 minutes
                 item.TimeToLive = "5";
             }
-           
 
-            var protectedValue = _protector.Protect(item.Value, TimeSpan.FromMinutes(Convert.ToInt32(item.TimeToLive)));
-            _context.SecretItems.Add(new SecretItem { Value = protectedValue, Token = token });
+            var lifespan = TimeSpan.FromMinutes(Convert.ToInt32(item.TimeToLive));
+            var protectedValue = _protector.Protect(item.Value, lifespan);
+
+            _context.SecretItems.Add(new SecretItem { Value = protectedValue, Token = token, ExpiredBy = DateTime.Now + lifespan });
             _context.SaveChanges();
             var link = $"https://{this.Request.Host}/api/secret/" + token;
             return Ok(link);

@@ -27,7 +27,7 @@ namespace SecretKeeper.Controllers
 
         public IActionResult Index(UploadItem model)
         {
-            return View(model);
+            return View("~/Views/Upload/Index.cshtml", model);
         }
 
         [HttpPost]
@@ -48,7 +48,7 @@ namespace SecretKeeper.Controllers
                 
                 if (!string.IsNullOrEmpty(fileExtension))
                 {
-                    privateFileName += "." + fileExtension;
+                    privateFileName += fileExtension;
                 }
                 
                 var basePath = Path.Combine("wwwroot", "Uploads");
@@ -68,11 +68,12 @@ namespace SecretKeeper.Controllers
                 }
 
                 model.Token = $"https://{Request.Host}/upload/" + privateFileName;
-                _context.UploadItems.Add(new UploadItem { Token = privateFileName, OriginalName = safeFileName, CreatedDate = DateTime.Now });
+                _context.UploadItems.Add(new UploadItem { Token = privateFileName, OriginalName = safeFileName,
+                    CreatedDate = DateTime.Now, ExpiredBy = DateTime.Now + TimeSpan.FromMinutes(5)});
                 _context.SaveChanges();
             }
 
-            return View("Index", model);
+            return View("~/Views/Upload/Index.cshtml", model);
         }
 
         [HttpGet("{token}")]
@@ -83,6 +84,7 @@ namespace SecretKeeper.Controllers
 
             UploadItem item;
             string originalName;
+
             var filename = token;
             var path = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot", "Uploads", filename);
 
@@ -99,8 +101,6 @@ namespace SecretKeeper.Controllers
 
             catch (CryptographicException)
             {
-                // cleanup file if it has expired
-                // TODO: implement scheduled cleanup for expired but never accessed file
                 FileOperator.DeleteUploadedFile(path);
                 return Ok("The requested file has expired");
             }

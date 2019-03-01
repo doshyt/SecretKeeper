@@ -12,5 +12,6 @@ namespace SecretKeeper.Models
         public IFormFile FileToUpload { set; get; }
         public string OriginalName { get; set; }
         public DateTime CreatedDate { get; set; }
+        public DateTime ExpiredBy { get; set; }
     }
 }
