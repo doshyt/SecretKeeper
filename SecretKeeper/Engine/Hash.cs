@@ -6,12 +6,15 @@ namespace SecretKeeper.Engine
 {
     public static class Hash
     {
-        public static string GetToken(Random rndController)
+        public static string GetSecureToken(RNGCryptoServiceProvider cryptoProvider)
         {
             using (var shaProvider = SHA256.Create())
             {
-                var randValue = rndController.Next(1, 10000000);
-                var data = shaProvider.ComputeHash(Encoding.UTF8.GetBytes(randValue.ToString()));
+                var byteArray = new byte[4];
+                cryptoProvider.GetBytes(byteArray);
+                var randNumber = BitConverter.ToUInt32(byteArray, 0);
+
+                var data = shaProvider.ComputeHash(Encoding.UTF8.GetBytes(randNumber.ToString()));
                 var sBuilder = new StringBuilder();
                 for (var i = 0; i < data.Length; i++)
                 {

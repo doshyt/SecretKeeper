@@ -15,12 +15,12 @@ namespace SecretKeeper.Controllers
     {
         private readonly ITimeLimitedDataProtector _protector;
         private readonly SecretContext _context;
-        private readonly Random _rndController;
+        private readonly RNGCryptoServiceProvider _rndProvider;
 
         public SecretController(SecretContext context)
         {
             _protector = DataProtectionProvider.Create("SecretKeeper").CreateProtector("Secrets.TimeLimited").ToTimeLimitedDataProtector();
-            _rndController = new Random();
+            _rndProvider = new RNGCryptoServiceProvider();
             _context = context;
 
         }
@@ -65,7 +65,7 @@ namespace SecretKeeper.Controllers
                 return Ok();
             }
 
-            var token = Hash.GetToken(_rndController);
+            var token = Hash.GetSecureToken(_rndProvider);
 
 
             if (item.TimeToLive == null)

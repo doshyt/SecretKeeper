@@ -16,8 +16,7 @@ namespace SecretKeeper.Controllers
     {
         
         private readonly FileDataProtector _protector = new FileDataProtector();
-        // TODO: Implement secure random number generation
-        private readonly Random _rndController = new Random();
+        private readonly RNGCryptoServiceProvider _rndProvider = new RNGCryptoServiceProvider();
         private readonly UploadContext _context;
 
         public UploadController(UploadContext context)
@@ -42,7 +41,7 @@ namespace SecretKeeper.Controllers
                     return BadRequest("File is to large. Allowed size < 100MB");
                 }
 
-                var privateFileName = Hash.GetToken(_rndController);
+                var privateFileName = Hash.GetSecureToken(_rndProvider);
                 var safeFileName = WebUtility.HtmlEncode(Path.GetFileName(fileToUpload.FileName));
                 var fileExtension = Path.GetExtension(safeFileName);
                 
