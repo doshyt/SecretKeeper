@@ -3,7 +3,7 @@ version: '3.4'
 services:
   secretkeeper:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Docker
     ports:
       - target: 443
         published: 443
