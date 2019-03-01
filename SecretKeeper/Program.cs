@@ -18,6 +18,7 @@ namespace SecretKeeper
         public string Scheme { get; set; }
         public string StoreName { get; set; }
         public string StoreLocation { get; set; }
+        public string Thumbprint { get; set; }
         public string FilePath { get; set; }
         public string Password { get; set; }
     }
@@ -79,8 +80,8 @@ namespace SecretKeeper
                 {
                     store.Open(OpenFlags.ReadOnly);
                     var certificate = store.Certificates.Find(
-                        X509FindType.FindBySubjectName,
-                        config.Host,
+                        X509FindType.FindByThumbprint,
+                        config.Thumbprint,
                         validOnly: !environment.IsDevelopment());
 
                     if (certificate.Count == 0)
